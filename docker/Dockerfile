@@ -12,8 +12,10 @@ RUN apt-get install -y vim procps net-tools \
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN touch /root/.inside_docker
 COPY preseed.* /etc/
 COPY *.sh /usr/local/sbin/
 RUN chmod +x /usr/local/sbin/*.sh
+COPY rc.local /root/rc.local
 
 CMD ["/usr/local/sbin/run.sh"]
