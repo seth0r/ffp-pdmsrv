@@ -24,7 +24,7 @@ export ISOINITRD=${ISOINITRD:-install.amd/initrd.gz}
 export ISOKERNEL=${ISOKERNEL:-install.amd/vmlinuz}
 export MIRROR=${MIRROR:-ftp.de.debian.org}
 export MIRRORPATH=${MIRRORPATH:-/debian}
-export PACKAGES=${PACKAGES:-openssh-server vim-nox git}
+export PACKAGES=${PACKAGES:-openssh-server vim-nox git build-essential}
 
 export REPOURL=${REPOURL:-https://github.com/seth0r/ffp-pdmsrv}
 
