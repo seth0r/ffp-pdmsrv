@@ -26,6 +26,8 @@ export MIRROR=${MIRROR:-ftp.de.debian.org}
 export MIRRORPATH=${MIRRORPATH:-/debian}
 export PACKAGES=${PACKAGES:-openssh-server vim-nox git}
 
+export REPOURL=${REPOURL:-https://github.com/seth0r/ffp-pdmsrv}
+
 envsubst < /etc/preseed.cfg > preseed.cfg
 if [ "`md5sum -c preseed.md5 | grep -i ok`" == "" ]; then
     echo "preseed.cfg has changed..."
@@ -98,10 +100,14 @@ if [ ! -f pdmvpn.img ]; then
         mkdir -p /data/config
         mount $lodev /data/config
     
+        touch /data/config/root/.inside_docker_inside_qemu
         ssh-keygen -f /root/.ssh/id_rsa -N ""
         mkdir /data/config/root/.ssh
         cat /root/.ssh/id_rsa.pub >> /data/config/root/.ssh/authorized_keys
-        echo "PermitRootLogin yes" >> //data/config/etc/ssh/sshd_config
+        echo "PermitRootLogin yes" >> /data/config/etc/ssh/sshd_config
+        git clone $REPOURL /data/config/root/repo
+        cp /root/rc.local /data/config/etc/rc.local
+        chmod +x /data/config/etc/rc.local
 
         sleep 30
 
