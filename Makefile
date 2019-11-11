@@ -30,3 +30,9 @@ clean: stop
 
 cleanall: stop
 	-rm -rf ${CURDIR}/inside
+
+checkinside:
+	test -f .inside_docker_inside_qemu || ( echo -e "This target should only be executed inside the VM. Exiting...\n" ; exit 1 )
+
+inside: checkinside
+	echo "Yeah!"
