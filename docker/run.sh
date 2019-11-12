@@ -7,16 +7,16 @@ _term() {
 
 trap _term SIGTERM
 
-if [ "$DIST" == "" -o "$HOSTNAME" == "" -o "$ROOT_PASSWORD" == "" ]; then
-    echo "At least DIST, HOSTNAME and ROOT_PASSWORD has to be set."
-    exit 1
-fi
-
-for i in `seq 5 -1 1`; do
+for i in `seq 3 -1 1`; do
     echo -ne "Starting in $i...   \r"
     sleep 1
 done
 echo "Starting...        "
+
+if [ "$DIST" == "" -o "$HOSTNAME" == "" -o "$ROOT_PASSWORD" == "" ]; then
+    echo "At least DIST, HOSTNAME and ROOT_PASSWORD has to be set."
+    exit 1
+fi
 
 export DEBUG=${DEBUG:-0}
 export BASEDIR=${BASEDIR:-/data}
