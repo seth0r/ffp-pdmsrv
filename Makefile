@@ -33,6 +33,7 @@ shellq:
 
 shutdown:
 	-docker exec -it "`docker ps | grep ${NAME} | cut -d' ' -f1`" ssh 172.22.255.42 shutdown -h now
+	sleep 5
 .PHONY: shutdown
 
 stop: shutdown
