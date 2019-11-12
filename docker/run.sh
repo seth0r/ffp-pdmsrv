@@ -46,9 +46,6 @@ source "${DISTDIR}/src_general.sh"
 source "${DISTDIR}/dist_${DIST}.sh"
 
 set | grep "^VM_" | sed 's/^VM_//' > ${BASEDIR}/qemu.env
-for i in $( seq 512 ); do
-    echo >> ${BASEDIR}/qemu.env
-done
 
 chmod 0777 "${BASEDIR}/"*
 
