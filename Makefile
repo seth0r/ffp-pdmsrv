@@ -1,38 +1,55 @@
 NAME=ffp-pdmsrv
-VOLUMES=-v ${CURDIR}/inside:/data
+VOLUMES=-v ${CURDIR}/data:/data
 PORTS=-p 8942:8942/udp
 CONFIG=config.env
 
 build:
 	docker build -t ${NAME} docker
+.PHONY: build
 
 config:
 	test -s ${CONFIG} || ( echo -e "\nconfig.env does not exist or is empty. Exiting...\n" ; exit 1 )
+.PHONY: config
 
 run: build config
-	mkdir -p ${CURDIR}/inside
-	docker attach --sig-proxy=false `docker run -d --privileged --env-file=${CONFIG}	${VOLUMES} ${PORTS} ${NAME}`
+	mkdir -p ${CURDIR}/data
+	docker run -d --privileged --env-file=${CONFIG}	${VOLUMES} ${PORTS} ${RUNARGS} ${NAME}
+.PHONY: run
 
-shell:
-	docker exec -it `docker ps | grep ${NAME} | cut -d' ' -f1` bash
-
-stop:
-	-docker stop `docker ps | grep ${NAME} | cut -d' ' -f1`
+runlog: run log
+.PHONY: runlog
 
 log:
-	docker attach --sig-proxy=false `docker ps | grep ${NAME} | cut -d' ' -f1`
+	docker attach --sig-proxy=false "`docker ps | grep ${NAME} | cut -d' ' -f1`"
+.PHONY: log
+
+shelld:
+	docker exec -it "`docker ps | grep ${NAME} | cut -d' ' -f1`" bash
+.PHONY: shelld
+
+shellq:
+	docker exec -it "`docker ps | grep ${NAME} | cut -d' ' -f1`" ssh 172.22.255.42
+.PHONY: shellq
+
+shutdown:
+	-docker exec -it "`docker ps | grep ${NAME} | cut -d' ' -f1`" ssh 172.22.255.42 shutdown -h now
+.PHONY: shutdown
+
+stop: shutdown
+	-docker stop "`docker ps | grep ${NAME} | cut -d' ' -f1`"
+.PHONY: stop
 
 clean: stop
-	-mv ${CURDIR}/inside/netinst.iso ${CURDIR}/netinst.iso
-	-rm -rf ${CURDIR}/inside
-	mkdir -p ${CURDIR}/inside
-	-mv ${CURDIR}/netinst.iso ${CURDIR}/inside/netinst.iso
+	rm -rf ${CURDIR}/data/tmp
+	rm -rf ${CURDIR}/data/*.tmp
+	rm -rf ${CURDIR}/data/*.img
+	rm -rf ${CURDIR}/data/qemu.*
+.PHONY: clean
 
-cleanall: stop
-	-rm -rf ${CURDIR}/inside
+cleanall: clean
+	rm -rf ${CURDIR}/data
+.PHONY: cleanall
 
-checkinside:
-	test -f /root/.inside_docker_inside_qemu || ( echo -e "This target should only be executed inside the VM. Exiting...\n" ; exit 1 )
-
-inside: checkinside
-	echo "Yeah!" > /root/x
+inside:
+	${MAKE} -C inside
+.PHONY: inside
