@@ -70,3 +70,7 @@ install() {
         exit 1
     fi
 }
+basicconfig() {
+    cp "${SRCDIR}/rc.local" "$1/etc/rc.local"
+    chmod +x "$1/etc/rc.local"
+}

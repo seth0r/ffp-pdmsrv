@@ -19,9 +19,6 @@ COPY dist /dist
 COPY *.sh /usr/local/sbin/
 RUN chmod +x /usr/local/sbin/*.sh
 
-COPY rc.local /etc/rc.local
-RUN chmod +x /etc/rc.local
-
 VOLUME /data
 
 CMD ["/usr/local/sbin/run.sh"]

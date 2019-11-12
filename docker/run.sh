@@ -62,6 +62,8 @@ if [ ! -f "${IMGFILE}" ]; then
     mkdir -p "${TARGETDIR}"
     tmount "${TARGETDIR}"
     
+    basicconfig "${TARGETDIR}"
+
     touch "${TARGETDIR}/root/.inside_qemu"
     permitroot "${TARGETDIR}"
     copykeys "${TARGETDIR}/root/.ssh"
