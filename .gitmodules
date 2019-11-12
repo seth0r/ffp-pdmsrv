@@ -1,0 +1,3 @@
+[submodule "inside/tunneldigger"]
+	path = inside/tunneldigger
+	url = https://github.com/wlanslovenija/tunneldigger.git
