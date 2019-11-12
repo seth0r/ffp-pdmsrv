@@ -42,6 +42,7 @@ initnet
 source "${DISTDIR}/ssh.sh"
 genkeys
 
+source "${DISTDIR}/src_general.sh"
 source "${DISTDIR}/dist_${DIST}.sh"
 
 chmod 0777 "${BASEDIR}/"*
