@@ -1,7 +1,9 @@
-NAME=ffp-pdmsrv
-VOLUMES=-v ${CURDIR}/data:/data
-PORTS=-p 8942:8942/udp
-CONFIG=config.env
+NAME:=ffp-pdmsrv
+VOLUMES:=-v ${CURDIR}/data:/data
+PORTS:=-p 8942:8942/udp
+CONFIG:=config.env
+
+CID=`docker ps | grep ${NAME} | cut -d' ' -f1`
 
 build:
 	docker build -t ${NAME} docker
@@ -19,28 +21,41 @@ run: build config
 runlog: run log
 .PHONY: runlog
 
-log:
-	docker attach --sig-proxy=false "`docker ps | grep ${NAME} | cut -d' ' -f1`"
+log: running
+	docker attach --sig-proxy=false "${CID}"
 .PHONY: log
 
-shelld:
-	docker exec -it "`docker ps | grep ${NAME} | cut -d' ' -f1`" bash
+shelld: running
+	docker exec -it "${CID}" bash
 .PHONY: shelld
 
-shellq:
-	docker exec -it "`docker ps | grep ${NAME} | cut -d' ' -f1`" ssh 172.22.255.42
+shellq: running
+	docker exec -it "${CID}" ssh 172.22.255.42
 .PHONY: shellq
 
-shutdown:
-	-docker exec -it "`docker ps | grep ${NAME} | cut -d' ' -f1`" ssh 172.22.255.42 shutdown -h now
-	sleep 5
+running:
+	test "${CID}" != ""
+.PHONY: running
+
+wait10:
+	for i in `seq 10`; do \
+		test "${CID}" != "" || break ; \
+		sleep 1 ; \
+	done
+.PHONY: wait10
+
+shutdown: running
+	-docker exec -it "${CID}" ssh 172.22.255.42 shutdown -h now
 .PHONY: shutdown
 
-stop: shutdown
-	-docker stop "`docker ps | grep ${NAME} | cut -d' ' -f1`"
+hardstop:
+	-docker stop "${CID}"
+.PHONY: hardstop
+
+stop: shutdown wait10 hardstop
 .PHONY: stop
 
-clean: stop
+clean: hardstop
 	rm -rf ${CURDIR}/data/tmp
 	rm -rf ${CURDIR}/data/*.tmp
 	rm -rf ${CURDIR}/data/*.img
