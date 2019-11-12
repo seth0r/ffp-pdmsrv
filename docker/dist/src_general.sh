@@ -15,7 +15,7 @@ run() {
         -net nic -net tap \
         -nographic \
         -drive "file=${IMGFILE},index=0,media=disk,format=raw" \
-        -drive "file=${BASEDIR}/qemu.env,index=1,media=cdrom,format=raw,read-only" \
+        -drive "file=${BASEDIR}/qemu.env,media=disk,format=raw" \
         -serial "unix:${BASEDIR}/qemu.console,server,nowait" \
         -monitor "file:${BASEDIR}/qemu.mon" &
     sleep 3
