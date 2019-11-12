@@ -2,6 +2,6 @@
 
 if [ -f /root/.inside_qemu ]; then
     cd /root/repo
-    git pull
+    git pull --recurse-submodules
     make inside
 fi
