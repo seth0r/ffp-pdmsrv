@@ -1,9 +1,5 @@
 #!/bin/bash
 
-if [ -f /root/.inside_docker_inside_qemu ]
-    cd /root/repo
-    git pull
-    make inside
-fi
+test -x /root/runinside.sh && /root/runinside.sh &
 
 exit 0

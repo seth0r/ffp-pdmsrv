@@ -13,9 +13,15 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN touch /root/.inside_docker
-COPY preseed.* /etc/
+
+COPY dist /dist
+
 COPY *.sh /usr/local/sbin/
 RUN chmod +x /usr/local/sbin/*.sh
-COPY rc.local /root/rc.local
+
+COPY rc.local /etc/rc.local
+RUN chmod +x /etc/rc.local
+
+VOLUME /data
 
 CMD ["/usr/local/sbin/run.sh"]
