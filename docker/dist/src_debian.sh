@@ -9,7 +9,7 @@ install() {
 
     envsubst < "${SRCDIR}/preseed.cfg" > "${TMPDIR}/preseed.cfg"
 
-    echo "Extracting vmlinuz and initrd from netinstall.iso..."
+    echo "Extracting vmlinuz and initrd from ${ISOFILE}..."
     mkdir -p "${TMPDIR}/netinst"
     mount -o loop "$ISOFILE" "${TMPDIR}/netinst"
     cp "${TMPDIR}/netinst/$ISOKERNEL" "${TMPDIR}/vmlinuz"
