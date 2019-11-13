@@ -6,9 +6,17 @@ all: broker client
 broker: rev_broker deps_run
 .PHONY: broker
 
+client: rev_client deps_run
+.PHONY: client
+
 rev_broker: rev_repo deps_build
 	cd repo/broker ; python setup.py install
 	cp rev_repo rev_broker
+
+rev_client: rev_repo deps_build
+	cmake repo/client
+	make -C repo/client
+	make -C repo/client install
 
 deps_run:
 	apt-get install -y \
@@ -19,8 +27,9 @@ deps_run:
 
 deps_build:
 	apt-get install -y \
-		build-essential python python-setuptools python-dev \
-		libnfnetlink-dev libnetfilter-conntrack-dev libffi-dev libevent-dev
+		build-essential cmake python python-setuptools python-dev \
+		libnfnetlink-dev libnetfilter-conntrack-dev libffi-dev libevent-dev \
+		libnl-genl-3-dev libnl-3-dev libasyncns-dev
 	touch deps_build
 
 repo:
