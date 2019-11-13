@@ -24,7 +24,6 @@ export DISTDIR=${DISTDIR:-/dist}
 export IMGNAME=${IMGNAME:-${HOSTNAME}_${DIST}.img}
 export IMGFILE=${BASEDIR}/${IMGNAME}
 
-
 export ISODIR="${BASEDIR}/iso"
 mkdir -p "${ISODIR}"
 
@@ -45,7 +44,8 @@ genkeys
 source "${DISTDIR}/src_general.sh"
 source "${DISTDIR}/dist_${DIST}.sh"
 
-set | grep "^VM_" | sed 's/^VM_//' > ${BASEDIR}/qemu.env
+set | grep "^NET_" > ${BASEDIR}/qemu.env
+set | grep "^VM_" | sed 's/^VM_//' >> ${BASEDIR}/qemu.env
 
 chmod 0777 "${BASEDIR}/"*
 
