@@ -34,7 +34,7 @@ shellq: running
 .PHONY: shellq
 
 running:
-	test "${CID}" != ""
+	test "${CID}" != "" || ( echo -e "Docker container is not running." ; exit 1 )
 .PHONY: running
 
 wait10:
@@ -53,6 +53,7 @@ hardstop:
 .PHONY: hardstop
 
 stop: shutdown wait10 hardstop
+	echo "Stopped."
 .PHONY: stop
 
 clean: hardstop
