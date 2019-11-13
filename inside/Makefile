@@ -1,6 +1,4 @@
-
-inside: checkinside upgrade
-	set
+inside: checkinside upgrade subs
 .PHONY: inside
 
 checkinside:
@@ -11,3 +9,16 @@ upgrade:
 	apt-get update
 	apt-get upgrade
 .PHONY: upgrade
+
+SUBDIRS := $(wildcard */.)
+
+subs: $(SUBDIRS)
+$(SUBDIRS):
+	$(MAKE) -C $@
+.PHONY: subs $(SUBDIRS)
+
+clean:
+	for dir in $(SUBDIRS); do \
+		$(MAKE) -C $$dir clean; \
+	done
+.PHONY: clean

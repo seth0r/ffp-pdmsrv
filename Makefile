@@ -61,6 +61,7 @@ clean: hardstop
 	rm -rf ${CURDIR}/data/*.tmp
 	rm -rf ${CURDIR}/data/*.img
 	rm -rf ${CURDIR}/data/qemu.*
+	${MAKE} -C inside clean
 .PHONY: clean
 
 cleanall: clean
