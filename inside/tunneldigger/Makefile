@@ -44,6 +44,10 @@ gitpull: repo
 
 rev_repo: repo gitpull
 
+l2tp_broker.cfg:
+	envsubst < "l2tp_broker.cfg.prep" > "l2tp_broker.cfg"
+	set
+
 clean:
 	rm -rf repo
 	rm -f rev_*
