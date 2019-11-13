@@ -30,7 +30,7 @@ shelld: running
 .PHONY: shelld
 
 shellq: running
-	docker exec -it "${CID}" ssh 172.22.255.42
+	docker exec -it "${CID}" qssh.sh
 .PHONY: shellq
 
 running:
@@ -45,7 +45,7 @@ wait10:
 .PHONY: wait10
 
 shutdown: running
-	-docker exec -it "${CID}" ssh 172.22.255.42 shutdown -h now
+	-docker exec -it "${CID}" qssh.sh shutdown -h now
 .PHONY: shutdown
 
 hardstop:
