@@ -14,7 +14,7 @@ rev_broker: rev_repo deps_build
 	cp rev_repo rev_broker
 
 rev_client: rev_repo deps_build
-	cmake repo/client
+	cd repo/client ; cmake .
 	make -C repo/client
 	make -C repo/client install
 
