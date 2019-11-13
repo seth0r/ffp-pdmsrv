@@ -9,7 +9,7 @@ LOCAL_PORT="$7"
 UUID="$8"
 LOCAL_BROKER_PORT="$9"
 
-. scripts/bridge_functions.sh
+. `dirname $0`/bridge_functions.sh
 
 # Set the interface to UP state
 ip link set dev $INTERFACE up mtu $MTU
