@@ -17,6 +17,7 @@ rev_client: rev_repo deps_build
 	cd repo/client ; cmake .
 	make -C repo/client
 	make -C repo/client install
+	cp rev_repo rev_client
 
 deps_run:
 	apt-get install -y \
